@@ -5,6 +5,8 @@ const cron = require("node-cron");
 const cookieParser = require("cookie-parser");
 
 const authController = require("./controllers/authController");
+const petsController = require("./controllers/petsController");
+const remindersController= require("./controllers/remindersController");
 
 // CONFIGURATION
 const app = express();
@@ -28,6 +30,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authController);
+app.use("/api/pets", petsController);
+app.use("/api/reminders", remindersController);
 
 // ROUTES
 app.get("/", (_req, res) => {
