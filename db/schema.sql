@@ -1,10 +1,9 @@
--- db/schema.sql
-DROP DATABASE IF EXISTS jwt_auth;
+DROP DATABASE IF EXISTS petpulse_db;
 
-CREATE DATABASE jwt_auth;
+CREATE DATABASE petpulse_db;
 
 
-\c jwt_auth
+\c petpulse_db;
 
 
 CREATE TABLE users (
@@ -12,6 +11,27 @@ CREATE TABLE users (
     username VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255) UNIQUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE pets (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    name VARCHAR(255),
+    species VARCHAR(255),
+    breed VARCHAR(255),
+    age INT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE reminders (
+    id SERIAL PRIMARY KEY,
+    pet_id INT REFERENCES pets(id),
+    reminder_type VARCHAR(255) NOT NULL,
+    reminder_message TEXT,
+    reminder_time TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
