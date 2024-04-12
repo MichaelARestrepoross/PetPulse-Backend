@@ -19,11 +19,11 @@ const getPetById = async (id) => {
 };
 
 const createPet = async (pet) => {
-  const { user_id, name, species } = pet;
+  const { user_id, name, species,breed, age } = pet;
   try {
     const newPet = await db.one(
-      'INSERT INTO pets (user_id, name, species) VALUES($1, $2, $3) RETURNING *',
-      [user_id, name, species]
+      'INSERT INTO pets (user_id, name, species , breed, age) VALUES($1, $2, $3, $4, $5) RETURNING *',
+      [user_id, name, species, breed, age]
     );
     return newPet;
   } catch (error) {
@@ -44,11 +44,11 @@ const deletePetById = async (id) => {
 };
 
 const updatePetById = async (id, pet) => {
-  const { user_id, name, species } = pet;
+  const { user_id, name, species, breed, age, updated_at} = pet;
   try {
     const updatedPet = await db.one(
-      'UPDATE pets SET user_id =$1, name=$2, species=$3 WHERE id=$4 RETURNING *',
-      [user_id, name, species, id]
+      'UPDATE pets SET user_id =$1, name=$2, species=$3, breed=$4, age=$5, updated_at=$6 WHERE id=$7 RETURNING *',
+      [user_id, name, species,breed, age, updated_at, id]
     );
     return updatedPet;
   } catch (error) {
