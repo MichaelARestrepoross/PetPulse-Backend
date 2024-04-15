@@ -19,11 +19,11 @@ const getPetById = async (id) => {
 };
 
 const createPet = async (pet) => {
-  const { user_id, name, species,breed, age } = pet;
+  const { user_id, name, species, breed, age, image_url } = pet;
   try {
     const newPet = await db.one(
-      'INSERT INTO pets (user_id, name, species , breed, age) VALUES($1, $2, $3, $4, $5) RETURNING *',
-      [user_id, name, species, breed, age]
+      'INSERT INTO pets (user_id, name, species , breed, age, image_url) VALUES($1, $2, $3, $4, $5, $6) RETURNING *',
+      [user_id, name, species, breed, age, image_url ]
     );
     return newPet;
   } catch (error) {
@@ -44,17 +44,18 @@ const deletePetById = async (id) => {
 };
 
 const updatePetById = async (id, pet) => {
-  const { user_id, name, species, breed, age, updated_at} = pet;
+  const { user_id, name, species, breed, age, image_url, updated_at } = pet;
   try {
     const updatedPet = await db.one(
-      'UPDATE pets SET user_id =$1, name=$2, species=$3, breed=$4, age=$5, updated_at=$6 WHERE id=$7 RETURNING *',
-      [user_id, name, species,breed, age, updated_at, id]
+      'UPDATE pets SET user_id=$1, name=$2, species=$3, breed=$4, age=$5, image_url=$6, updated_at=$7 WHERE id=$8 RETURNING *',
+      [user_id, name, species, breed, age, image_url, updated_at, id]
     );
     return updatedPet;
   } catch (error) {
     return error;
   }
 };
+
 
 module.exports = {
   getAllPets,

@@ -4,6 +4,7 @@ const { generateToken } = require("../utils/token");
 const { findUserByUsername, createUser } = require("../queries/users");
 const { authenticateToken } = require("../middlewares/authenticateToken");
 const auth = express.Router();
+const {schduleReminders} = require ("../schedules/schedule");
 
 // Login route
 auth.post("/login", async (req, res) => {
@@ -20,6 +21,7 @@ auth.post("/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
 
     const token = generateToken(user);
+    // schduleReminders(io,user.id)
 
     res.status(200).json({
       message: "Logged in successfully",

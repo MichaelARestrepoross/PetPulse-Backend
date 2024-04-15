@@ -1,5 +1,19 @@
 const db = require('../db/dbConfig');
 
+const findReminder = async (id) => {
+  console.log("id", id);
+  try {
+    const reminders = await db.any(
+      "SELECT * FROM reminders WHERE user_id = $1 AND reminder_time BETWEEN NOW() AND (NOW() + INTERVAL '2 minutes')",
+      [id]
+    );  
+    return reminders;
+  } catch (error) {
+    throw error;
+  }
+};
+  
+
 
  // Retrieve all reminders.
 const getAllReminders = async () => {
@@ -82,6 +96,7 @@ const updateReminderById = async (id, reminder) => {
 };
 
 module.exports = {
+  findReminder,
   getAllReminders,
   getReminderById,
   createReminder,
