@@ -89,7 +89,7 @@ const updateReminderById = async (id, reminder) => {
   const { pet_id,user_id, reminder_type, reminder_message, reminder_time } = reminder;
   try {
     const updatedReminder = await db.one(
-      "UPDATE reminders SET pet_id = $1, user_id $2 , reminder_type = $3, reminder_message = $4, reminder_time = $5 WHERE id = $6 RETURNING *",
+      "UPDATE reminders SET pet_id = $1, user_id = $2 , reminder_type = $3, reminder_message = $4, reminder_time = $5 WHERE id = $6 RETURNING *",
       [pet_id, user_id, reminder_type, reminder_message, reminder_time, id]
     );
     return updatedReminder;

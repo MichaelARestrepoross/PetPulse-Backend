@@ -26,6 +26,6 @@ console.log("calling auth server");
 app.use("/api/auth", authController(io));
 
 // LISTEN
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`💻 Listening on port ${PORT} 🔖`);
 });
