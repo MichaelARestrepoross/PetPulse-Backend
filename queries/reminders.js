@@ -15,26 +15,29 @@ const findReminder = async (id) => {
   
 
 
- // Retrieve all reminders.
+// Retrieve all reminders.
 const getAllReminders = async () => {
-  try {
-    const reminders = await db.any(`
-    SELECT 
-      r.*, 
-      p.name AS pet_name 
-    FROM 
-      reminders r
-    JOIN 
-      pets p ON r.pet_id = p.id
-    ORDER BY 
-      r.reminder_time ASC;
-    `);
-    return reminders;
-  } catch (error) {
-    console.error("Error fetching all reminders:", error);
-    throw error;
-  }
-};
+    try {
+      const reminders = await db.any(`
+      SELECT 
+        r.*, 
+        p.name AS pet_name 
+      FROM 
+        reminders r
+      JOIN 
+        pets p ON r.pet_id = p.id
+      WHERE 
+        r.reminder_time >= NOW()
+      ORDER BY 
+        r.reminder_time ASC;
+      `);
+      return reminders;
+    } catch (error) {
+      console.error("Error fetching all reminders:", error);
+      throw error;
+    }
+  };
+  
 
 
 //Retrieve a reminder by its ID.

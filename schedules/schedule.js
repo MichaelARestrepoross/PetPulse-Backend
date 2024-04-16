@@ -1,19 +1,23 @@
-// const schedule =require("node-schdule");
-// const { findReminder } = require("../queries/reminders")
+const schedule = require("node-schedule");
+const { findReminder } = require("../queries/reminders");
+// const fetch = require("node-fetch");
 
+// Function to emit reminders to users
 
-// // function to emit reminders to users 
+const emitReminders = async (io, userId) => {
+  //This makes a query to get all of the reminders for the user
+  console.log("userid", userId);
+  const allReminders = await findReminder(userId);
+  console.log("allReminders", allReminders);
+  //This emits aka sends the reminders to the user
+  io.emit("remindersDue", allReminders);
+};
 
-// const emitReminders = async (io, id)=>{
-//   const allReminders = await findReminder(1);
-//   console.log("allReminders", allReminders)
+// this schedules the emitReminders function to run every minute
+// https://www.npmjs.com/package/node-schedule reference this link to understand the syntax for .scheduleJob
+const scheduleReminders = (io, userId) => {
+  console.log("ran scheduleReminders");
+  schedule.scheduleJob("*/1 * * * *", () => emitReminders(io, userId));
+};
 
-//   io.emit("remindersDue", allReminders)
-// };
-
-// const schduleReminders = (io,id) => {
-//   console.log("ran SchduleReminders");
-//   schedule.schduleJob("*/1 * * * *", () => emitReminders(io,id));
-// };
-
-// module.exports = {schduleReminders};
+module.exports = { scheduleReminders };

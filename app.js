@@ -3,8 +3,10 @@ const cors = require("cors");
 const express = require("express");
 const cron = require("node-cron");
 const cookieParser = require("cookie-parser");
+const { findAllReminders } = require("./queries/reminders");
 
-const authController = require("./controllers/authController");
+const checkController = require("./controllers/checkController");
+
 const petsController = require("./controllers/petsController");
 const remindersController= require("./controllers/remindersController");
 
@@ -12,12 +14,12 @@ const remindersController= require("./controllers/remindersController");
 const app = express();
 
 // cron job to attempt to prevent render from sleeping
-cron.schedule("*/5 * * * *", () => {
-  const currentTime = new Date().toLocaleString("en-US", {
-    timeZone: "America/New_York",
-  });
-  console.log(`Running a task every 5 minutes. Current time: ${currentTime}`);
-});
+// cron.schedule("*/5 * * * *", () => {
+//   const currentTime = new Date().toLocaleString("en-US", {
+//     timeZone: "America/New_York",
+//   });
+//   console.log(`Running a task every 5 minutes. Current time: ${currentTime}`);
+// });
 
 // MIDDLEWARE change origin to your frontend netlify address for deployment
 app.use(
@@ -29,13 +31,15 @@ app.use(
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api/auth", authController);
+console.log("app in app.js");
+app.use("/api/check", checkController);
+
 app.use("/api/pets", petsController);
 app.use("/api/reminders", remindersController);
 
 // ROUTES
 app.get("/", (_req, res) => {
-  res.send("Welcome to JWT Auth!");
+  res.send("Welcome to PetPulse Auth!");
 });
 
 // 404 PAGE
