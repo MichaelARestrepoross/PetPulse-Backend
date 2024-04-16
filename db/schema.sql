@@ -17,7 +17,7 @@ CREATE TABLE users (
 
 CREATE TABLE pets (
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(id),
+    user_id INT NOT NULL REFERENCES users(id),
     name VARCHAR(255),
     species VARCHAR(255),
     breed VARCHAR(255),
@@ -29,7 +29,8 @@ CREATE TABLE pets (
 
 CREATE TABLE reminders (
     id SERIAL PRIMARY KEY,
-    pet_id INT REFERENCES pets(id) ON DELETE CASCADE,
+    user_id INT NOT NULL REFERENCES users(id),
+    pet_id INT NOT NULL REFERENCES pets(id) ON DELETE CASCADE,
     reminder_type VARCHAR(255) NOT NULL,
     reminder_message TEXT,
     reminder_time TIMESTAMP WITH TIME ZONE,

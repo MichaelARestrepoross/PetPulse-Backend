@@ -5,7 +5,12 @@ const http = require("http");
 
 
 const server = http.createServer(app);
-const io = socketIo(server); // This is the crucial part for socket.io
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000", // Adjust according to your frontend host
+    methods: ["GET", "POST"],
+  },
+}); 
 
 const authController = require("./controllers/authController");
 

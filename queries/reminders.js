@@ -4,9 +4,10 @@ const findReminders = async (id) => {
   console.log("id", id);
   try {
     const reminders = await db.any(
-      "SELECT * FROM reminders WHERE user_id = $1 AND reminder_time BETWEEN NOW() AND (NOW() + INTERVAL '2 minutes')",
+      "SELECT * FROM reminders WHERE user_id = $1",
       [id]
-    );  
+    );
+    console.log("Reminders:",reminders)  
     return reminders;
   } catch (error) {
     throw error;
@@ -27,7 +28,7 @@ const getAllReminders = async () => {
       JOIN 
         pets p ON r.pet_id = p.id
       WHERE 
-        r.reminder_time >= NOW()
+        r.reminder_time >= NOW() 
       ORDER BY 
         r.reminder_time ASC;
       `);
@@ -54,11 +55,11 @@ const getReminderById = async (id) => {
 
  //Create a new reminder.
 const createReminder = async (reminder) => {
-  const { pet_id, reminder_type, reminder_message, reminder_time } = reminder;
+  const { pet_id,user_id , reminder_type, reminder_message, reminder_time } = reminder;
   try {
     const newReminder = await db.one(
-      "INSERT INTO reminders (pet_id, reminder_type, reminder_message, reminder_time) VALUES ($1, $2, $3, $4) RETURNING *",
-      [pet_id, reminder_type, reminder_message, reminder_time]
+      "INSERT INTO reminders (pet_id, user_id, reminder_type, reminder_message, reminder_time) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [pet_id, user_id , reminder_type, reminder_message, reminder_time]
     );
     return newReminder;
   } catch (error) {
@@ -85,11 +86,11 @@ const deleteReminderById = async (id) => {
 
 //Update a reminder by its ID.
 const updateReminderById = async (id, reminder) => {
-  const { pet_id, reminder_type, reminder_message, reminder_time } = reminder;
+  const { pet_id,user_id, reminder_type, reminder_message, reminder_time } = reminder;
   try {
     const updatedReminder = await db.one(
-      "UPDATE reminders SET pet_id = $1, reminder_type = $2, reminder_message = $3, reminder_time = $4 WHERE id = $5 RETURNING *",
-      [pet_id, reminder_type, reminder_message, reminder_time, id]
+      "UPDATE reminders SET pet_id = $1, user_id $2 , reminder_type = $3, reminder_message = $4, reminder_time = $5 WHERE id = $6 RETURNING *",
+      [pet_id, user_id, reminder_type, reminder_message, reminder_time, id]
     );
     return updatedReminder;
   } catch (error) {
