@@ -1,5 +1,5 @@
 const schedule = require("node-schedule");
-const { findReminder } = require("../queries/reminders");
+const { findReminders } = require("../queries/reminders");
 // const fetch = require("node-fetch");
 
 // Function to emit reminders to users
@@ -7,7 +7,7 @@ const { findReminder } = require("../queries/reminders");
 const emitReminders = async (io, userId) => {
   //This makes a query to get all of the reminders for the user
   console.log("userid", userId);
-  const allReminders = await findReminder(userId);
+  const allReminders = await findReminders(userId);
   console.log("allReminders", allReminders);
   //This emits aka sends the reminders to the user
   io.emit("remindersDue", allReminders);

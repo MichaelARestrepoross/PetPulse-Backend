@@ -3,7 +3,7 @@ const cors = require("cors");
 const express = require("express");
 const cron = require("node-cron");
 const cookieParser = require("cookie-parser");
-const { findAllReminders } = require("./queries/reminders");
+const { findAllReminder } = require("./queries/reminders");
 
 const checkController = require("./controllers/checkController");
 

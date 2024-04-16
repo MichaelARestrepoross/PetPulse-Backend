@@ -1,6 +1,6 @@
 const db = require('../db/dbConfig');
 
-const findReminder = async (id) => {
+const findReminders = async (id) => {
   console.log("id", id);
   try {
     const reminders = await db.any(
@@ -99,7 +99,7 @@ const updateReminderById = async (id, reminder) => {
 };
 
 module.exports = {
-  findReminder,
+  findReminders,
   getAllReminders,
   getReminderById,
   createReminder,
