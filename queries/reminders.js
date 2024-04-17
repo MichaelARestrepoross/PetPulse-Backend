@@ -4,7 +4,7 @@ const findReminders = async (id) => {
   console.log("id", id);
   try {
     const reminders = await db.any(
-      "SELECT * FROM reminders WHERE user_id = $1",
+      "SELECT * FROM reminders WHERE user_id = $1 AND reminder_time >= NOW() AND reminder_time <= NOW() + INTERVAL '5 minutes'",
       [id]
     );
     console.log("Reminders:",reminders)  
