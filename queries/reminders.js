@@ -1,18 +1,24 @@
 const db = require('../db/dbConfig');
 
 const findReminders = async (id) => {
-  console.log("id", id);
-  try {
-    const reminders = await db.any(
-      "SELECT * FROM reminders WHERE user_id = $1 AND reminder_time >= NOW() AND reminder_time <= NOW() + INTERVAL '5 minutes'",
-      [id]
-    );
-    console.log("Reminders:",reminders)  
-    return reminders;
-  } catch (error) {
-    throw error;
-  }
-};
+    console.log("id", id);
+    try {
+      const reminders = await db.any(
+        `SELECT r.*, p.name AS pet_name
+        FROM reminders r
+        JOIN pets p ON r.pet_id = p.id
+        WHERE r.user_id = $1
+        AND r.reminder_time >= NOW()
+        AND r.reminder_time <= NOW() + INTERVAL '5 minutes'`,
+        [id]
+      );
+      console.log("Reminders:", reminders);
+      return reminders;
+    } catch (error) {
+      throw error;
+    }
+  };
+  
   
 
 
