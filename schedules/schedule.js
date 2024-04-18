@@ -10,14 +10,22 @@ const emitReminders = async (io, userId) => {
   const allReminders = await findReminders(userId);
   // console.log("allReminders", allReminders);
   //This emits aka sends the reminders to the user
-  io.emit("remindersDue", allReminders);
+  if(allReminders.length>0){
+    io.emit("remindersDue", allReminders);
+  }
 };
 
-// this schedules the emitReminders function to run every minute
+// this schedules the emitReminders function to run every 15 seconds
 // https://www.npmjs.com/package/node-schedule reference this link to understand the syntax for .scheduleJob
-const scheduleReminders = (io, userId) => {
-  console.log("ran scheduleReminders");
-  schedule.scheduleJob("*/1 * * * *", () => emitReminders(io, userId));
+const scheduleReminders = async (io, userId) => {
+  // sets a schedule see if theres anthing
+  schedule.scheduleJob("*/15 * * * * *", async () => {
+    const allReminders = await findReminders(userId);
+    if (allReminders.length > 0) {
+      console.log("ran scheduleReminders");
+      emitReminders(io, userId);
+    }
+  });
 };
 
 module.exports = { scheduleReminders };
